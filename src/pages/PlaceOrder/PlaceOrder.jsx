@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../Context/StoreContext';
 import './PlaceOrder.css';
 import axios from 'axios';
@@ -23,6 +23,10 @@ const PlaceOrder = () => {
         setData(data=>({...data,[name]:value}))
     }
 
+    useEffect(() => {
+        console.log(data);
+    },[data])
+
     const placeOrder = async(e)=>{
         e.preventDefault();
         let orderItems = [];
@@ -37,8 +41,10 @@ const PlaceOrder = () => {
         let orderData = {
             address:data,
             items:orderItems,
-            amount:getTotalCartAmount()+2,
+            amount:getTotalCartAmount()+20,
         }
+
+        console.log("orderData",orderData)
 
         let response = await axios.post(url+"/api/order/place",orderData,{headers:{token}});
         if(response.data.success){
@@ -47,7 +53,7 @@ const PlaceOrder = () => {
         }
 
         else{
-            alert("error");
+            alert("err");
         }
         
     }
